@@ -41,7 +41,15 @@
     </v-app-bar>
     <v-content>
       <v-container>
-        <nuxt />
+        <Breadcrumb class="ml-4"/>
+        
+        <v-layout column justify-center align-center>
+          <v-flex xs12 sm8 md6>
+            <nuxt />
+          </v-flex>
+        </v-layout>
+        
+        
       </v-container>
     </v-content>
     <v-navigation-drawer
@@ -71,7 +79,9 @@
 </template>
 
 <script>
+import Breadcrumb from '../components/Breadcrumb';
 export default {
+  components: { Breadcrumb },
   data () {
     return {
       clipped: false,

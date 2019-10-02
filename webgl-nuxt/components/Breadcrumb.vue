@@ -1,23 +1,37 @@
 <template>
-  <h1>Breadcrumb</h1>
+  <v-breadcrumbs :items="breadCrumb">
+<!--    <template v-slot:divider>-->
+<!--      <v-icon>chevron_right</v-icon>-->
+<!--    </template>-->
+  </v-breadcrumbs>
 </template>
 
 <script>
   export default {
     name: 'Breadcrumb',
     computed: {
-      routes() {
-        let routes = this.$router.options.routes;
-        let shaders = i => i.includes('/vertex') || i.includes('/fragment');
-        let number = i => parseInt(i.slice(0, 2));
-        return routes
-          .filter(i => !shaders(i.path))
-          .map(i => { return { name: i.name, path: i.path };})
-          .sort((a, b) => number(a.name) - number(b.name))
+      paths() {
+        return this.$Paths(this.$router);
       },
-    },
-    mounted() {
-      console.log(this.routes);
+      breadCrumb() {
+        let items = [];
+        let current = this.paths.getPath(this.$route.path);
+        let temp = current;
+        let node = path => {
+          return {
+            text: path.name,
+            to: path.path,
+            link: true,
+            disabled: false,
+          };
+        };
+        while (temp.parent) {
+          items.push(node(temp));
+          temp = temp.parent;
+        }
+        items.push(node(temp));
+        return items.reverse();
+      },
     },
   };
 </script>
