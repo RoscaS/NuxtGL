@@ -107,3 +107,9 @@ export default {
   }
 }
 </script>
+
+<style>
+  /*a.v-breadcrumbs__item {*/
+  /*  color: #ec008c;*/
+  /*}*/
+</style>

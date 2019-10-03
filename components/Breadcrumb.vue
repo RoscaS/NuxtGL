@@ -1,8 +1,6 @@
 <template>
-  <v-breadcrumbs :items="breadCrumb">
-<!--    <template v-slot:divider>-->
-<!--      <v-icon>chevron_right</v-icon>-->
-<!--    </template>-->
+  <v-breadcrumbs :items="breadCrumb" divider="-">
+
   </v-breadcrumbs>
 </template>
 
@@ -20,11 +18,12 @@
         let node = path => {
           return {
             text: path.name,
-            to: path.path,
+            href: path.path,
             link: true,
-            disabled: false,
+            disabled: this.$route.path == path.path
           };
         };
+        
         while (temp.parent) {
           items.push(node(temp));
           temp = temp.parent;
@@ -36,6 +35,6 @@
   };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 
 </style>

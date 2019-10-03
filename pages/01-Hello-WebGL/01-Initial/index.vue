@@ -1,19 +1,20 @@
 <template>
-  <v-layout>
-    <v-flex class="text-center">
-      <h1>Hello WebGL</h1>
-      <canvas width="300" height="300" id="webgl"></canvas>
-    </v-flex>
-  </v-layout>
+  
+  <WebGL title="Hello WebGL">
+    <canvas width="300" height="300" id="webgl"></canvas>
+  </WebGL>
+  
 </template>
 
 <script>
+import ContentCard from '../../../components/ContentCard';
+import WebGL from '../../../components/WebGL';
 import vertex from './vertex';
 import fragment from './fragment';
 
 export default {
-  components: {},
-  name: "first",
+  components: { WebGL, ContentCard },
+  name: 'first',
   mounted() {
     /* Step1: Prepare the canvas and get WebGL context */
     let canvas = document.getElementById('webgl');
@@ -38,7 +39,7 @@ export default {
     let fragShader = gl.createShader(gl.FRAGMENT_SHADER);
     gl.shaderSource(fragShader, fragCode);
     gl.compileShader(fragShader);
-    
+
     let shaderProgram = gl.createProgram();
     gl.attachShader(shaderProgram, vertShader);
     gl.attachShader(shaderProgram, fragShader);

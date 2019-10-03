@@ -16,11 +16,8 @@ class Path {
 
   computeName() {
     if (this.list[0] == '') return 'Home';
-    if (this.list.length > 1) {
-      return this.list[this.list.length - 1];
-    } else {
-      return this.list[0].split('-').splice(1).join(' ');
-    }
+    let idx = this.list.length > 1 ? this.list.length - 1 : 0;
+    return this.list[idx].split('-').splice(1).join(' ');
   }
 }
 
