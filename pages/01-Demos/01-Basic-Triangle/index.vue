@@ -1,7 +1,5 @@
 <template>
-  <div>
-    <WebGL :width="width" :height="height" :canvas-id="canvasId"/>
-  </div>
+  <WebGL :width="width" :height="height" :canvas-id="canvasId"/>
 </template>
 
 <script>

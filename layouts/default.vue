@@ -26,24 +26,25 @@
     </v-navigation-drawer>
     <v-app-bar
       :clipped-left="clipped"
+      height="50"
       fixed
       app
     >
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
       <v-toolbar-title v-text="title" />
       <v-spacer />
-      <v-btn
-        icon
-        @click.stop="rightDrawer = !rightDrawer"
-      >
-        <v-icon>mdi-menu</v-icon>
-      </v-btn>
+<!--      <v-btn-->
+<!--        icon-->
+<!--        @click.stop="rightDrawer = !rightDrawer"-->
+<!--      >-->
+<!--        <v-icon>mdi-menu</v-icon>-->
+<!--      </v-btn>-->
     </v-app-bar>
     <v-content>
       <v-container>
         <Breadcrumb class="ml-4"/>
         
-        <v-layout column justify-center align-center>
+        <v-layout column justify-center align-center mt-5>
           <v-flex xs12 sm8 md6>
             <nuxt />
           </v-flex>
@@ -73,7 +74,21 @@
       :fixed="fixed"
       app
     >
-      <span>&copy; 2019</span>
+      <v-layout>
+        <v-spacer />
+        <v-flex style="text-align: center">
+          <span class="mr-3 copyright">
+            Copyright &copy; {{ new Date().getFullYear() }} <b>JrosK</b>
+          </span>
+          <span class="design-and-code">
+            Design & code:
+            <a class="link ml-1" href="mailto:jrosk.managment@gmail.com">
+              Sol Rosca
+            </a>
+          </span>
+        </v-flex>
+        <v-spacer />
+      </v-layout>
     </v-footer>
   </v-app>
 </template>
@@ -88,26 +103,43 @@ export default {
     fixed: false,
     items: [
       {
-        icon: 'mdi-apps',
-        title: 'Welcome',
+        icon: 'mdi-home',
+        title: 'Home',
         to: '/'
       },
-      {
-        icon: 'mdi-chart-bubble',
-        title: 'Inspire',
-        to: '/inspire'
-      }
+      // {
+      //   icon: 'mdi-chart-bubble',
+      //   title: 'Inspire',
+      //   to: '/inspire'
+      // }
     ],
     miniVariant: false,
     right: true,
     rightDrawer: false,
-    title: 'WebGL'
+    title: "Boite a WebGL"
   }),
 }
 </script>
 
-<style>
-  /*a.v-breadcrumbs__item {*/
-  /*  color: #ec008c;*/
-  /*}*/
+<style lang="scss">
+  .admin-footer {
+    border-top: 1px solid lightgray;
+    background-color: white;
+  }
+  
+  .copyright {
+    font-size: 12px;
+    color: #757575;
+  }
+  .design-and-code {
+    font-size: 12px;
+    color: #757575;
+  
+    .link {
+      color: #EC008C;
+      font-size: 14px;
+      font-weight: bold;
+      text-decoration: none;
+    }
+  }
 </style>
