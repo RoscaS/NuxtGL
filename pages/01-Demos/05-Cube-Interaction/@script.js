@@ -100,7 +100,7 @@ export default function(canvasId) {
   var proj_matrix = get_projection(40, canvas.width / canvas.height, 1,
     100,
   );
-  var mo_matrix = [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1];
+  var mo_matrix =   [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1];
   var view_matrix = [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1];
 
   view_matrix[14] = view_matrix[14] - 6;

@@ -3,18 +3,18 @@
 </template>
 
 <script>
-  import script from "./@script";
+  import Project from './@Project';
   import WebGL from '../../../components/WebGL';
 
   export default {
     components: { WebGL },
     data: () => ({
-      width: "300",
-      height: "300",
+      width: "500",
+      height: "500",
       canvasId: "webgl",
     }),
     mounted() {
-      script(this.canvasId, this.width, this.height);
+      new Project(this.canvasId, this.width, this.height);
     },
   };
 </script>

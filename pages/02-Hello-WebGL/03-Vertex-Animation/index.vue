@@ -3,7 +3,7 @@
 </template>
 
 <script>
-  import Project from "./@Project";
+  import Project from './@Project';
   import WebGL from '../../../components/WebGL';
 
   export default {
