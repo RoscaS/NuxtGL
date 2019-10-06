@@ -9,12 +9,12 @@
   export default {
     components: { WebGL },
     data: () => ({
-      width: "300",
-      height: "300",
+      width: "500",
+      height: "500",
       canvasId: "webgl",
     }),
     mounted() {
-      script(this.canvasId);
+      script(this.canvasId, this.width, this.height);
     },
   };
 </script>

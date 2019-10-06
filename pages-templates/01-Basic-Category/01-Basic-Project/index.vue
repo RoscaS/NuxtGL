@@ -14,7 +14,7 @@
       canvasId: "webgl",
     }),
     mounted() {
-      script(this.canvasId);
+      script(this.canvasId, this.width, this.height);
     },
   };
 </script>
