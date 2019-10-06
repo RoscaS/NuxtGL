@@ -1,13 +1,13 @@
 import { mat4 } from 'gl-matrix';
 import WebGL from '../../../tools/WebGL';
 import vertex_script from './@shader-vertex';
-import fragment_script from './@shader-fragment';
+import ProjectInterface from '../../../tools/ProjectInterface';
 
 
-export default class BaseProject {
+export default class BaseProject extends ProjectInterface {
   constructor(canvasId, width, height) {
+    super();
     this.webGl = new WebGL(canvasId, vertex_script, fragment_script);
-    this.gl = this.webGl.gl;
     this.dt = 0.0;
 
     this.canvasId = canvasId;
@@ -45,7 +45,7 @@ export default class BaseProject {
     mat4.perspective(this.camera.pMatrix, rad, ratio , 0.1, 40);
   }
 
-  bridgeCpuGpu(){
+  bindBuffersToShaders(){
     this.webGl.bindBuffer(this.webGl.buffers.vertex, "aVertexPosition", 3);
     this.webGl.bindBuffer(this.webGl.buffers.fragment, "aColor",4);
     return {
@@ -61,7 +61,7 @@ export default class BaseProject {
 
   updateBuffers() {
     this.webGl.initializeBuffers(this.geometry);
-    return this.bridgeCpuGpu();
+    return this.bindBuffersToShaders();
   }
 
   render() {

@@ -1,6 +1,7 @@
 import { mat4 } from 'gl-matrix';
 import WebGL from '../../../tools/WebGL';
 import vertex_script from './@shader-vertex';
+import fragment_script from './@shader-fragment';
 import ProjectInterface from '../../../tools/ProjectInterface';
 
 

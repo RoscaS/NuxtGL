@@ -11,11 +11,33 @@ export default class WebGl {
     this.buffers = null;
   }
 
-  _createShader(shaderScript, type) {
-    let shader = this.gl.createShader(type);
-    this.gl.shaderSource(shader, shaderScript);
-    this.gl.compileShader(shader);
-    return shader;
+  /**
+   * **First step in the pipline** after the declaration of the geometry
+   * inside the main JS code. Set `buffers` member attribute with an
+   * object that contains 3 buffers `vertex`, `colors`, `indexes`.
+   * @param geometry contains 3 arrays: `Vertices`, `Colors`, `Indexes`
+   */
+  initializeBuffers(geometry) {
+    let vertices = new Float32Array(geometry.vertices);
+    let colors =  new Float32Array(geometry.colors);
+    let indexes = new Uint16Array(geometry.indexes);
+
+    let elementArrayBit = this.gl.ELEMENT_ARRAY_BUFFER;
+    let arrayBit = this.gl.ARRAY_BUFFER;
+
+    this.buffers = {
+      vertex: this._createBuffer(arrayBit, vertices, this.gl),
+      fragment: this._createBuffer(arrayBit, colors, this.gl),
+      index: this._createBuffer(elementArrayBit, indexes, this.gl),
+    };
+  }
+
+  bindBuffer(buffer, glslVarName, vectorSize) {
+    let attribute = this.gl.getAttribLocation(this.shaderProgram, glslVarName);
+    let args = [attribute, vectorSize, this.gl.FLOAT, false, 0, 0];
+    this.gl.bindBuffer(this.gl.ARRAY_BUFFER, buffer);
+    this.gl.vertexAttribPointer(...args);
+    this.gl.enableVertexAttribArray(attribute);
   }
 
   initializeShaders() {
@@ -34,15 +56,8 @@ export default class WebGl {
     return this.shaderProgram;
   }
 
-  bindBuffer(buffer, glslVarName, vectorSize) {
-    let attribute = this.gl.getAttribLocation(this.shaderProgram, glslVarName);
-    let args = [attribute, vectorSize, this.gl.FLOAT, false, 0, 0];
-    this.gl.bindBuffer(this.gl.ARRAY_BUFFER, buffer);
-    this.gl.vertexAttribPointer(...args);
-    this.gl.enableVertexAttribArray(attribute);
-  }
 
-  createBuffer(type, array) {
+  _createBuffer(type, array) {
     let buffer = this.gl.createBuffer();
     // Bind an empty array buffer to it
     this.gl.bindBuffer(type, buffer);
@@ -53,19 +68,12 @@ export default class WebGl {
     return buffer
   }
 
-  initializeBuffers(geometry) {
-    let verticesArray = new Float32Array(geometry.vertices);
-    let colorsArray =  new Float32Array(geometry.colors);
-    let indexesArray = new Uint16Array(geometry.indexes);
-
-    let elementArrayBit = this.gl.ELEMENT_ARRAY_BUFFER;
-    let arrayBit = this.gl.ARRAY_BUFFER;
-
-    this.buffers = {
-      vertex: this.createBuffer(arrayBit, verticesArray, this.gl),
-      fragment: this.createBuffer(arrayBit, colorsArray, this.gl),
-      index: this.createBuffer(elementArrayBit, indexesArray, this.gl),
-    };
-    return this.buffers;
+  _createShader(shaderScript, type) {
+    let shader = this.gl.createShader(type);
+    this.gl.shaderSource(shader, shaderScript);
+    this.gl.compileShader(shader);
+    return shader;
   }
+
+
 }
