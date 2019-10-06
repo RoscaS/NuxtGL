@@ -17,7 +17,7 @@ export default class BaseProject extends ProjectInterface {
 
     this.geometry = { vertices: [], indexes: [], colors: [] };
     this.camera = { pMatrix: null, mvMatrix: null };
-    this.uMatrices = null;
+    this.uMatrices = { uPMatrix: null, uMVMatrix: null };
 
     this.setGeometry();
     this.setCamera();
@@ -26,7 +26,7 @@ export default class BaseProject extends ProjectInterface {
     let renderLoop = () => {
       this.dt += 0.01;
       this.update();
-      this.uMatrices = this.updateBuffers();
+      this.updateBuffers();
       this.render();
       window.requestAnimationFrame(renderLoop);
     };
@@ -49,20 +49,20 @@ export default class BaseProject extends ProjectInterface {
   bindBuffersToShaders(){
     this.webGl.bindBuffer(this.webGl.buffers.vertex, "aVertexPosition", 3);
     this.webGl.bindBuffer(this.webGl.buffers.fragment, "aColor",4);
-    return {
+    this.uMatrices = {
       uPMatrix: this.webGl.gl.getUniformLocation(this.webGl.shaderProgram, 'uPMatrix'),
       uMVMatrix: this.webGl.gl.getUniformLocation(this.webGl.shaderProgram, 'uMVMatrix')
     }
   }
 
-  initialize() {
-    this.webGl.initializeShaders();
-    return this.updateBuffers();
-  }
-
   updateBuffers() {
     this.webGl.initializeBuffers(this.geometry);
     return this.bindBuffersToShaders();
+  }
+
+  initialize() {
+    this.webGl.initializeShaders();
+    return this.updateBuffers();
   }
 
   render() {

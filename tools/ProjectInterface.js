@@ -8,7 +8,8 @@ export default class ProjectInterface {
   setCamera() { /* abstract */ }
 
   /**
-   * **Second step of the pipeline**
+   * Binds buffers to their respective attributes inside GLSL code and
+   * sets the member attribute `uMatrices` .
    */
   bindBuffersToShaders() { /* abstract */ }
 
