@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import Sumary from '../components/Sumary';
+import Sumary from '../../components/Sumary';
 export default {
   components: { Sumary },
 };

@@ -1,7 +1,6 @@
 <template>
 
 <content-card :title="path.name" width="400">
-    
     <v-list>
         <v-list-item
           v-for="(item, i) in categories"
@@ -9,18 +8,15 @@
           :to="item.path"
         >
           <v-list-item-icon>
-            <span class="number">{{ i }}</span>
+            <span class="number">{{ i+1 }}</span>
           </v-list-item-icon>
           <v-list-item-content>
-            <v-list-item-title v-text="item.name" class="name"></v-list-item-title>
+            <v-list-item-title v-text="item.name" class="name"/>
           </v-list-item-content>
         </v-list-item>
     </v-list>
   
 </content-card>
-
-
-
 </template>
 
 <script>

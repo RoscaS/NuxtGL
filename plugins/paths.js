@@ -29,11 +29,10 @@ class Paths {
 
   computePaths() {
     let routes = this.router.options.routes;
-    let shaders = i => i.includes('/vertex') || i.includes('/fragment');
-    let cleaned = routes.filter(i => !shaders(i.path)).
+    let excludes = i => i.includes('/@');
+    let cleaned = routes.filter(i => !excludes(i.path)).
       map(i => new Path(i)).
       sort((a, b) => a.branch - b.branch);
-
     let sorted = [];
     let branches = [...new Set(cleaned.map(i => i.branch))].length;
     for (let i = 1; i <= branches; i++) {
