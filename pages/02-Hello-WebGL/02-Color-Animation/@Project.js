@@ -21,7 +21,7 @@ export default class Project extends BaseProject {
     this.geometry.colors.push(0.0, 1.0, 0.0, 1.0); // Bottom right corner
     this.geometry.colors.push(0.0, 0.0, 1.0, 1.0); // Top corner
 
-    this.geometry.indexes.push(0, 1, 2);
+    this.geometry.indices.push(0, 1, 2);
   }
 
   update() {

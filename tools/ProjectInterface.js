@@ -1,6 +1,11 @@
 
 export default class ProjectInterface {
 
+  /**
+   * **Second step of the pipeline**. Initialization of the `vertices`, their
+   * `indices` and their `colors` in 3 differents Arrays wrapped in a geometry
+   * object. **The first step** is the declaration of those arrays.
+   */
   setGeometry() { /* abstract */ }
 
   update() { /* abstract */ }

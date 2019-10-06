@@ -6,15 +6,18 @@ export default class Project extends BaseProject {
   }
 
   setGeometry() {
-    this.geometry.vertices.push(-1.0, -1.0, -2.0); // Bottom left vertex
-    this.geometry.vertices.push(1.0, -1.0, -2.0); // Bottom right vertex
-    this.geometry.vertices.push(0.0, 1.0, -2.0); // Top vertex
 
-    this.geometry.colors.push(1.0, 0.0, 0.0, 1.0); // Bottom left corner
-    this.geometry.colors.push(0.0, 1.0, 0.0, 1.0); // Bottom right corner
-    this.geometry.colors.push(0.0, 0.0, 1.0, 1.0); // Top corner
+    let index = 0;
 
-    this.geometry.indexes.push(0, 1, 2);
+    for (let xx = -0.9; xx < 0.9; xx += 0.2) {
+      if (index % 2) this.geometry.vertices.push(xx, 0.0, -2.0);
+      else this.geometry.vertices.push(xx, 0.1, -2.0);
+
+      if (index % 3) this.geometry.colors.push(1.0, 0.0, 0.0, 1.0);
+      else this.geometry.colors.push(0.0, 0.0, 1.0, 1.0);
+
+      this.geometry.indices.push(index++);
+    }
   }
 
   update() {

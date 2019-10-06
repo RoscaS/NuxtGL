@@ -15,17 +15,15 @@ export default class WebGl {
    \*------------------------------------------------------------------*/
 
   /**
-   * **First step in the pipline** after the declaration of the geometry
-   * inside the main JS code. Set `buffers` member attribute with an
-   * object that contains 3 buffers that are bound to their respective Shaders
-   * inside the GLSL code.
+   * Set `buffers` member attribute with an object that contains 3 buffers that
+   * are bound to their respective Shaders inside the GLSL code.
    * @param {Object} geometry contains 3 JS arrays:
-   * `Vertices`, `Colors`, `Indexes`
+   * `vertices`, `colors`, `indices`
    */
   initializeBuffers(geometry) {
     let vertices = new Float32Array(geometry.vertices);
     let colors = new Float32Array(geometry.colors);
-    let indexes = new Uint16Array(geometry.indexes);
+    let indices = new Uint16Array(geometry.indices);
 
     let elementArrayBuffer = this.gl.ELEMENT_ARRAY_BUFFER;
     let arrayBuffer = this.gl.ARRAY_BUFFER;
@@ -33,13 +31,13 @@ export default class WebGl {
     this.buffers = {
       vertex: this.createBuffer(arrayBuffer, vertices, this.gl),
       fragment: this.createBuffer(arrayBuffer, colors, this.gl),
-      index: this.createBuffer(elementArrayBuffer, indexes, this.gl),
+      index: this.createBuffer(elementArrayBuffer, indices, this.gl),
     };
   }
 
   /**
-   * Create a buffer that can be used to pass data from the JS code to the
-   * GLSL (shader) code (From the CPU to the GPU).
+   * **Third step of the pipeline**: Create a buffer that can be used to pass
+   * data from the JS code to the GLSL (shader) code (From the CPU to the GPU).
    * @param{Number} bufferType WebGL const specifing the type of buffer array
    * @param data {Array} JS array containing list of vectors
    * @returns {WebGLBuffer} Buffer ready to be bind
@@ -57,18 +55,20 @@ export default class WebGl {
   }
 
   /**
-   * Bind `buffer` to it's related attribute inside the GLSL code.
+   * **Fourth step of the pipeline**: Bind `buffer` to it's related attribute
+   * inside the GLSL code. First we bind the buffer to the GLSL file trough
+   * `gl.bindBuffer()` and then we specifie that the data will be delivered
+   * trough a pointer with `gl.vertexAttribPointer`.
    * @param {WebGLBuffer} buffer buffer to be bound
    * @param {String} attrName string that contains the name of the
    * corresponding GLSL attribute (`aVertexPosition`, `aColor`, ...)
    * @param {Number} vectorSize vector size (`vec2`,`3`,`4`) inside the GLSL code
    */
   bindBuffer(buffer, attrName, vectorSize) {
-    let attribute = this.gl.getAttribLocation(this.shaderProgram, attrName);
-    let args = [attribute, vectorSize, this.gl.FLOAT, false, 0, 0];
+    let attr = this.gl.getAttribLocation(this.shaderProgram, attrName);
     this.gl.bindBuffer(this.gl.ARRAY_BUFFER, buffer);
-    this.gl.vertexAttribPointer(...args);
-    this.gl.enableVertexAttribArray(attribute);
+    this.gl.vertexAttribPointer(attr, vectorSize, this.gl.FLOAT, false, 0, 0);
+    this.gl.enableVertexAttribArray(attr);
   }
 
    /*------------------------------------------------------------------*\
@@ -94,9 +94,9 @@ export default class WebGl {
   }
 
   /**
-   * Create and compile a Shader.
-   * @param {String} shaderScript Contains the GLSL code
-   * @param {Number} WebGL constant that designate the type of shader
+   * Create and compile a shader.
+   * @param {String} shaderScript Contains the shader GLSL code
+   * @param {Number} type WebGL constant that designate the type of the shader
    * (Vertex or Fragment) to be created.
    * @returns {WebGLShader} Compiled shader.
    */

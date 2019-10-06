@@ -15,7 +15,7 @@ export default class BaseProject extends ProjectInterface {
     this.width = width;
     this.height = height;
 
-    this.geometry = { vertices: [], indexes: [], colors: [] };
+    this.geometry = { vertices: [], indices: [], colors: [] };
     this.camera = { pMatrix: null, mvMatrix: null };
     this.uMatrices = { uPMatrix: null, uMVMatrix: null };
 
@@ -67,7 +67,7 @@ export default class BaseProject extends ProjectInterface {
 
   render() {
     let gl = this.webGl.gl;
-    let indexSize = this.geometry.indexes.length;
+    let indexSize = this.geometry.indices.length;
 
     gl.clearColor(1.0, 1.0, 1.0, 1.0);
     gl.enable(gl.DEPTH_TEST);
