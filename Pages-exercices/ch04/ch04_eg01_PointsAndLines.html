@@ -64,8 +64,10 @@
             glContext.clear(glContext.COLOR_BUFFER_BIT | glContext.DEPTH_BUFFER_BIT);
             glContext.viewport(0, 0, c_width, c_height);
             mat4.identity(pMatrix);
+            
             glContext.uniformMatrix4fv(prg.pMatrixUniform, false, pMatrix);
             glContext.bindBuffer(glContext.ARRAY_BUFFER, vertexBuffer);
+            
             glContext.vertexAttribPointer(prg.vertexPositionAttribute, 3, glContext.FLOAT, false, 0, 0);
             glContext.bindBuffer(glContext.ARRAY_BUFFER, colorBuffer);
             glContext.vertexAttribPointer(prg.colorAttribute, 4, glContext.FLOAT, false, 0, 0);
