@@ -1,10 +1,9 @@
 <template>
-  <v-card
-    class="mx-auto"
-    :width="width"
-    tile
+  <v-card class="mx-auto"
+          :width="width"
+          tile
   >
-    <v-list>
+    <v-list v-if="title">
       <v-subheader class="title font-weight-light">
         <v-divider class="line mr-4" color="ec008c"/>
         <span class="title font-weight-light header-text">
@@ -14,7 +13,7 @@
       </v-subheader>
     </v-list>
     
-    <slot></slot>
+      <slot></slot>
 
   </v-card>
 </template>
@@ -35,9 +34,8 @@
     align-content: baseline;
     padding-top: 15px;
   }
-  
+
   .line {
     color: #ec008c !important;
-    margin-top: 10px !important;
   }
 </style>

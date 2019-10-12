@@ -33,7 +33,7 @@ export default {
    ** Plugins to load before mounting the App
    */
   plugins: [
-    "~/plugins/paths.js",
+    '~/plugins/paths.js',
   ],
   /*
    ** Nuxt.js dev-modules
@@ -44,7 +44,8 @@ export default {
   /*
    ** Nuxt.js modules
    */
-  modules: [],
+  modules: [
+  ],
   /*
    ** vuetify module configuration
    ** https://github.com/nuxt-community/vuetify-module
