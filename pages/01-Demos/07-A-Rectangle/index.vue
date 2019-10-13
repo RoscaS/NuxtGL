@@ -2,7 +2,7 @@
   <div>
     <WebGL :width="width" :height="height" :canvas-id="canvasId" tools>
     
-      <template v-slot:tools>
+      <template v-slot:left-tools>
         <v-slider thumb-label hide-details v-model="tx" :max="width" label="x"/>
         <v-slider thumb-label hide-details v-model="ty" :max="width" label="y"/>
         <v-slider thumb-label hide-details v-model="sx" min="-1" :max="1" step="0.1" label="scaleX"/>

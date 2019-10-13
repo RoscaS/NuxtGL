@@ -3,6 +3,8 @@ import fragment from './@shader-fragment';
 import vertex from './@shader-vertex';
 import m3 from '../../../tools/m3';
 
+let degToRad = deg => (360 - deg) * Math.PI / 180;
+
 export default class Project {
   constructor(canvasId) {
     let canvas = document.getElementById(canvasId);
@@ -31,10 +33,7 @@ export default class Project {
     this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.colorBuffer);
     this.setColor();
 
-    this.scale = { x: 1, y: 1 };
-    this.translation = { x: 200, y: 150 };
-    this.angleInRadians = 0;
-    this.split = 0;
+    this.values = { tX: 200, tY: 150, sX: 1, sY: 1, an: 0 };
 
     this.drawScene();
   }
@@ -73,9 +72,9 @@ export default class Project {
       this.gl.canvas.clientWidth,
       this.gl.canvas.clientHeight,
     );
-    matrix = m3.translate(matrix, this.translation.x, this.translation.y);
-    matrix = m3.rotate(matrix, this.angleInRadians);
-    matrix = m3.scale(matrix, this.scale.x, this.scale.y);
+    matrix = m3.translate(matrix, this.values.tX, this.values.tY);
+    matrix = m3.scale(matrix, this.values.sX, this.values.sY);
+    matrix = m3.rotate(matrix, degToRad(this.values.an));
     this.gl.uniformMatrix3fv(this.matrixLocation, false, matrix);
 
     let primitiveType = this.gl.TRIANGLES;
@@ -90,12 +89,12 @@ export default class Project {
       this.gl.ARRAY_BUFFER,
       new Float32Array([
         -150, -100,
-         150, -100,
-        -150,  100,
+        150, -100,
+        -150, 100,
 
-         150, -100,
-        -150,  100,
-         150,  100,
+        150, -100,
+        -150, 100,
+        150, 100,
       ]),
       this.gl.STATIC_DRAW,
     );

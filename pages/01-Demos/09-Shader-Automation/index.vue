@@ -27,9 +27,9 @@
       sliders: {
         tX: { model: 0, min: 0, max: width, step: 1, label: 'x' },
         tY: { model: 0, min: 0, max: height, step: 1, label: 'y' },
-        sX: { model: 0, min: -2, max: 2, step: 0.01, label: 'scaleX' },
-        sY: { model: 0, min: -2, max: 2, step: 0.01, label: 'scaleY' },
-        an: { model: 0, min: 0, max: 360, step: 0.1, label: 'angle' },
+        rX: { model: 0, min: -2, max: 2, step: 0.01, label: 'rotX' },
+        rY: { model: 0, min: -2, max: 2, step: 0.01, label: 'rotY' },
+        // an: { model: 0, min: 0, max: 360, step: 0.1, label: 'angle' },
       },
     }),
     computed: {

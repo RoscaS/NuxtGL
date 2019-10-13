@@ -31,8 +31,12 @@
       app
     >
 <!--      <v-app-bar-nav-icon @click.stop="drawer = !drawer" />-->
-      <v-toolbar-title v-text="title" class="ml-5"/>
-      <v-spacer />
+      <v-toolbar-title v-text="title" class="ml-5" style="position:absolute;"/>
+<!--      <v-spacer />-->
+      <transition name="fade">
+        <Player v-if="$store.state.player.enable"/>
+      </transition>
+<!--      <v-spacer />-->
 <!--      <v-btn-->
 <!--        icon-->
 <!--        @click.stop="rightDrawer = !rightDrawer"-->
@@ -95,8 +99,9 @@
 
 <script>
 import Breadcrumb from '../components/Breadcrumb';
+import Player from '../components/Player';
 export default {
-  components: { Breadcrumb },
+  components: { Player, Breadcrumb },
   data: () => ({
     clipped: false,
     drawer: false,
@@ -116,12 +121,23 @@ export default {
     miniVariant: false,
     right: true,
     rightDrawer: false,
-    title: "Boite a WebGL"
+    title: "Boite à WebGL"
   }),
 }
 </script>
 
 <style lang="scss">
+  
+  .fade-enter-active,
+  .fade-leave-active {
+    transition: opacity 0.5s;
+  }
+
+  .fade-enter,
+  .fade-leave-to {
+    opacity: 0;
+  }
+  
   .admin-footer {
     border-top: 1px solid lightgray;
     background-color: white;

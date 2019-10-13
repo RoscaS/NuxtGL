@@ -1,7 +1,7 @@
 <template>
 
 <content-card :title="path.name" width="400">
-    <v-list>
+    <v-list class="list-wrapper">
         <v-list-item
           v-for="(item, i) in categories"
           :key="i"
@@ -56,8 +56,10 @@
     }
   }
   
+  
+  .list-wrapper {
+    max-height: 500px;
+    overflow-y: auto;
+  }
 
-  /*.name {*/
-  /*  color: #1976D2;*/
-  /*}*/
 </style>

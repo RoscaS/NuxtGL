@@ -1,11 +1,13 @@
 export default `
+
 #ifdef GL_ES // Retro compatibility
   precision highp float; // high precision is set
 #endif
 
-varying vec4 vColor; // Comming from vertex
+uniform vec4 u_color;
 
-void main(void) {
-  gl_FragColor = vColor;
+
+void main() {
+  gl_FragColor = u_color;
 }
 `;

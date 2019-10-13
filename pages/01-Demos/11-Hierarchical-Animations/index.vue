@@ -14,7 +14,7 @@
   import Infos from '../../../components/Infos';
   import Sliders from '../../../components/Sliders';
 
-  const width = '500';
+  const width = '800';
   const height = '500';
 
   export default {
@@ -27,8 +27,8 @@
       sliders: {
         tX: { model: 0, min: 0, max: width, step: 1, label: 'x' },
         tY: { model: 0, min: 0, max: height, step: 1, label: 'y' },
-        sX: { model: 0, min: -2, max: 2, step: 0.01, label: 'scaleX' },
-        sY: { model: 0, min: -2, max: 2, step: 0.01, label: 'scaleY' },
+        sX: { model: 0, min: -3, max: 3, step: 0.01, label: 'scaleX' },
+        sY: { model: 0, min: -3, max: 3, step: 0.01, label: 'scaleY' },
         an: { model: 0, min: 0, max: 360, step: 0.1, label: 'angle' },
       },
     }),

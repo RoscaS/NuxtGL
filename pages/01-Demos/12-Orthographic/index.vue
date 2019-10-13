@@ -15,7 +15,7 @@
   import Sliders from '../../../components/Sliders';
 
   const width = '500';
-  const height = '500';
+  const height = '350';
 
   export default {
     components: { Sliders, Infos, WebGL },
@@ -27,9 +27,13 @@
       sliders: {
         tX: { model: 0, min: 0, max: width, step: 1, label: 'x' },
         tY: { model: 0, min: 0, max: height, step: 1, label: 'y' },
-        sX: { model: 0, min: -2, max: 2, step: 0.01, label: 'scaleX' },
-        sY: { model: 0, min: -2, max: 2, step: 0.01, label: 'scaleY' },
-        an: { model: 0, min: 0, max: 360, step: 0.1, label: 'angle' },
+        tZ: { model: 0, min: 0, max: height, step: 1, label: 'z' },
+        sX: { model: 0, min: -3, max: 3, step: 0.01, label: 'sX' },
+        sY: { model: 0, min: -3, max: 3, step: 0.01, label: 'sY' },
+        sZ: { model: 0, min: -3, max: 3, step: 0.01, label: 'sZ' },
+        rX: { model: 0, min: 0, max: 360, step: 0.1, label: 'rX' },
+        rY: { model: 0, min: 0, max: 360, step: 0.1, label: 'rY' },
+        rZ: { model: 0, min: 0, max: 360, step: 0.1, label: 'rZ' },
       },
     }),
     computed: {

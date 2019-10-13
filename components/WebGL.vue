@@ -9,9 +9,24 @@
           
     </content-card>
     
-    <content-card v-if="tools" class="pa-5 mt-5" :width="width">
-      <slot name="tools"></slot>
-    </content-card>
+      <v-layout>
+        <v-spacer/>
+        <v-flex v-if="LTools">
+          <content-card v-if="true" class="pa-5 mt-5" :width="width">
+            <slot name="left-tools"></slot>
+          </content-card>
+        </v-flex>
+        
+        <v-flex xs2 ml-4 v-if="RTools">
+          <content-card v-if="true" class="pa-5 mt-5">
+        
+            <slot name="right-tools"></slot>
+          </content-card>
+        </v-flex>
+        <v-spacer/>
+      </v-layout>
+      
+      
   </div>
 
 </template>
@@ -27,7 +42,8 @@
       height: { type: String, default: '300' },
       canvasId: { type: String, default: 'webgl' },
       border: { type: Boolean },
-      tools: { type: Boolean },
+      LTools: { type: Boolean },
+      RTools: { type: Boolean },
     },
     computed: {
       projectName() {
