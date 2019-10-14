@@ -12,7 +12,7 @@
   import Project from './@script';
   import WebGL from '../../../components/WebGL';
   import Infos from '../../../components/Infos';
-  import Sliders from '../../../components/Sliders';
+  import Sliders from '../../../components/Inputs';
 
   const width = '500';
   const height = '350';

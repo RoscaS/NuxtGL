@@ -3,7 +3,7 @@
     <WebGL :width="width" :height="height" :canvas-id="canvasId" LTools
            v-shortkey="keys" @shortkey.native="arrowsKeys">
       <template v-slot:left-tools>
-        <Sliders :sliders="sliders" :project="project"/>
+        <Inputs :sliders="sliders" :project="project" color/>
       </template>
     </WebGL>
   </div>
@@ -13,13 +13,13 @@
   import Project from './@script';
   import WebGL from '../../../components/WebGL';
   import Infos from '../../../components/Infos';
-  import Sliders from '../../../components/Sliders';
+  import Inputs from '../../../components/Inputs';
 
   const width = '500';
   const height = '400';
 
   export default {
-    components: { Sliders, Infos, WebGL },
+    components: { Inputs, Infos, WebGL },
     data: () => ({
       keys: {
         up: ['arrowup'],
