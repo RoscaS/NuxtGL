@@ -53,7 +53,7 @@ export default class Project {
 
     let renderLoop = () => {
       if (this.playing()) {
-        this.store.commit("player/SET_ELAPSED", 0.1);
+        this.store.commit("player/UPDATE_DT", 0.1);
         this.values.cameraAngle = this.dt();
         this.drawScene();
       }

@@ -1,3 +1,8 @@
+
+export let radToDeg = r => r * 180 / Math.PI;
+export let degToRad = d => d * Math.PI / 180;
+
+
 function createShader(gl, type, source) {
   let shader = gl.createShader(type);
   gl.shaderSource(shader, source);
@@ -26,3 +31,4 @@ export function createShaderProgram(gl, vertex, fragment) {
   let fragmentShader = createShader(gl, gl.FRAGMENT_SHADER, fragment);
   return createProgram(gl, vertexShader, fragmentShader);
 }
+

@@ -2,8 +2,8 @@
 export const state = () => ({
   enable: false,
   playing: false,
-  elapsed: 0,
   speed: 1,
+  dt: 0,
 });
 
 export const mutations = {
@@ -14,8 +14,8 @@ export const mutations = {
   SET_PLAYING(state, value) {
     state.playing = value;
   },
-  SET_ELAPSED(state, value) {
-    state.elapsed += value * state.speed;
+  UPDATE_DT(state, value) {
+    state.dt += value * state.speed;
   },
   SET_SPEED(state, value) {
     state.speed = value;

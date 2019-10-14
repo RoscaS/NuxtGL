@@ -54,7 +54,7 @@
           
         },
         set(value) {
-          this.$store.commit("player/SET_ELAPSED", value);
+          this.$store.commit("player/UPDATE_DT", value);
         }
       },
       speed: {
