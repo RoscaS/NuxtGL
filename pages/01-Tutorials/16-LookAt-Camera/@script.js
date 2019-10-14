@@ -46,7 +46,7 @@ export default class Project {
     this.fPosition = [this.values.z, 0, 0];
     this.up = [0, 1, 0];
 
-    this.dt = () => this.store.state.player.elapsed;
+    this.dt = () => this.store.state.player.dt;
     this.playing = () => this.store.state.player.playing;
 
     this.drawScene();

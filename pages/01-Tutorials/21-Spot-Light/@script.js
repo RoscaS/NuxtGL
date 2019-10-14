@@ -34,25 +34,44 @@ export default class Project {
 
   get camera() { return [this.values.camX, this.values.camY, this.values.camZ] }
   get target() { return [this.values.tarX, this.values.tarY, this.values.tarZ] }
-  get light() { return [this.values.ligX, this.values.ligY, this.values.ligZ]}
+
+  get light() { return [this.values.ligX, this.values.ligY, this.values.ligZ] }
 
   /*------------------------------------------------------------------*\
   |*							            INITIALIZATION
   \*------------------------------------------------------------------*/
 
   initAttributes() {
+    // look up where the vertex data needs to go.
     this.positionLocation = this.gl.getAttribLocation(this.program, 'a_position');
     this.normalLocation = this.gl.getAttribLocation(this.program, 'a_normal');
 
+    // look up uniforms
     this.colorLocation = this.gl.getUniformLocation(this.program, 'u_color');
+    this.worldLocation = this.gl.getUniformLocation(this.program, "u_world");
+    this.shininessLocation = this.gl.getUniformLocation(this.program, 'u_shininess');
+    this.WVPLocation = this.gl.getUniformLocation( // World View Projection
+      this.program, "u_worldViewProjection"
+    );
     this.WITLocation = this.gl.getUniformLocation( // World Inverse Transpose
       this.program, 'u_worldInverseTranspose'
     );
-    this.WVPLocation = this.gl.getUniformLocation(
-      this.program, "u_worldViewProjection"
+    this.lightWorldPositionLocation = this.gl.getUniformLocation(
+      this.program, "u_lightWorldPosition"
     );
-    this.reverseLightDirectionLocation = this.gl.getUniformLocation(
-      this.program, "u_reverseLightDirection"
+    this.viewWorldPositionLocation = this.gl.getUniformLocation(
+      this.program, "u_viewWorldPosition"
+    );
+    this.lightDirectionLocation = this.gl.getUniformLocation(
+      this.program, 'u_lightDirection'
+    );
+    this.innerLimitLocation = this.gl.getUniformLocation(
+      this.program,
+      'u_innerLimit'
+    );
+    this.outerLimitLocation = this.gl.getUniformLocation(
+      this.program,
+      'u_outerLimit'
     );
   }
 
@@ -131,9 +150,9 @@ export default class Project {
     );
     // Compute camera's matrix
     let cameraMatrix = m4.lookAt(this.camera, this.target, this.up);
-    // Vue matrix from camera's matrix
+    // View matrix from camera's matrix
     let viewMatrix = m4.inverse(cameraMatrix);
-    // Compute vue projection matrix
+    // Compute view projection matrix
     let viewProjectionMatrix = m4.multiply(projectionMatrix, viewMatrix);
     // Draw a figure at the origin
     let worldMatrix = m4.yRotation(degToRad(this.values.rotation));
@@ -147,11 +166,31 @@ export default class Project {
     let transpose = false;
     this.gl.uniformMatrix4fv(this.WVPLocation, transpose, worldViewProjectionMatrix);
     this.gl.uniformMatrix4fv(this.WITLocation, transpose, worldInverseTransposeMatrix);
+    this.gl.uniformMatrix4fv(this.worldLocation, transpose, worldMatrix);
     // Set the color to use
     this.gl.uniform4fv(this.colorLocation, this.figureColor);
-    // Set light direction
-    let direction = m4.normalize(this.light);
-    this.gl.uniform3fv(this.reverseLightDirectionLocation, direction);
+    // Set light position
+    const lightPos = [40, 60, 120];
+    this.gl.uniform3fv(this.lightWorldPositionLocation, lightPos);
+    // Set the camera/view position
+    this.gl.uniform3fv(this.viewWorldPositionLocation, this.camera);
+    // Set the shininess
+    this.gl.uniform1f(this.shininessLocation, this.values.shine);
+
+    // Set spotlight uniforms
+    // Point the spotlight at the figure
+    let lightMatrix = m4.lookAt(lightPos, this.target, this.up);
+    lightMatrix = m4.multiply(m4.xRotation(degToRad(this.values.ligRotX)), lightMatrix);
+    lightMatrix = m4.multiply(m4.yRotation(degToRad(this.values.ligRotY)), lightMatrix);
+    // Get the zAxis from the matrix
+    // negate it because lookAt looks down the -z axis
+    this.values.ligX = -lightMatrix[8];
+    this.values.ligY = -lightMatrix[9];
+    this.values.ligZ = -lightMatrix[10];
+
+    this.gl.uniform3fv(this.lightDirectionLocation, this.light);
+    this.gl.uniform1f(this.innerLimitLocation, Math.cos(degToRad(this.values.innerLimit)));
+    this.gl.uniform1f(this.outerLimitLocation, Math.cos(degToRad(this.values.outerLimit)));
   }
 
   renderLoop = () => {
@@ -174,17 +213,24 @@ export default class Project {
       zNear: 1,
       zFar: 20000,
       rotation: 0, //figureRotationRad
-      camX: 100,
-      camY: 150,
-      camZ: 200,
+      camX: 147,
+      camY: 0,
+      camZ: 176,
 
       tarX: 0,
       tarY: 35,
       tarZ: 0,
 
-      ligX: 0.5,
-      ligY: 0.7,
+      ligRotX: 0,
+      ligRotY: 0,
+
+      ligX: 0,
+      ligY: 0,
       ligZ: 1,
+
+      innerLimit: 10,
+      outerLimit: 20,
+      shine: 150,
     };
 
     this.up = [0, 1, 0];

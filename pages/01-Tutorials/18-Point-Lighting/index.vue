@@ -35,9 +35,9 @@
       sliders: {
         tarX: { model: 0, min: -400, max: 400, step: 0.01, label: 'tarX', side: "L"},
         tarY: { model: 0, min: -400, max: 400, step: 0.01, label: 'tarY', side: "L"},
-        ligX: { model: 0, min: -1, max: 1, step: 0.01, label: 'ligX', side: "L"},
-        ligY: { model: 0, min: -1, max: 1, step: 0.01, label: 'ligY', side: "L"},
-        ligZ: { model: 0, min: -1, max: 1, step: 0.01, label: 'ligZ', side: "L"},
+        ligX: { model: 0, min: -400, max: 500, step: 0.01, label: 'ligX', side: "L"},
+        ligY: { model: 0, min: -400, max: 500, step: 0.01, label: 'ligY', side: "L"},
+        ligZ: { model: 0, min: -400, max: 500, step: 0.01, label: 'ligZ', side: "L"},
         fov: { model: 60, min: 0, max: 180, step: 0.01, label: 'Field of view', side: "L"},
         rotation: { model: 60, min: -360, max: 360, step: 0.01, label: 'rotation', side: "L"},
         camX: { model: 0, min: -1000, max: 1000, step: 0.01, label: 'camX', side: "R"},

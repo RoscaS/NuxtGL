@@ -26,8 +26,9 @@
                   thumb-label
                   hide-details
         />
-        <v-color-picker mode="rgba"
-                        v-model="rgba"
+        <v-color-picker v-if="colorPicker"
+                        mode="rgba"
+                        v-model="figure"
                         hide-inputs
                         hide-canvas
                         flat/>
@@ -43,9 +44,10 @@
     props: {
       sliders: { type: Object },
       project: { type: Object },
+      colorPicker: { type: Boolean },
     },
     data: () => ({
-      rgba: { r: 0, g: 191, b: 255, a: 1 },
+      figure: { r: 0, g: 191, b: 255, a: 1 },
     }),
     watch: {
       sliders: {
@@ -57,24 +59,18 @@
 
         }, deep: true,
       },
-      rgba(value) {
+      figure(value) {
         let f = channel => channel / 255;
-        console.log(value)
-        this.project.figureColor = [
-          f(value.r),
-          f(value.g),
-          f(value.b),
-          value.a,
-        ];
+        this.project.figureColor = [f(value.r), f(value.g), f(value.b), value.a,];
         this.project.drawScene();
       },
     },
     mounted() {
       setTimeout(() => {
-        this.rgba.r = this.project.figureColor[0] * 255;
-        this.rgba.g = this.project.figureColor[1] * 255;
-        this.rgba.b = this.project.figureColor[2] * 255;
-        this.rgba.a = this.project.figureColor[3] * 255;
+        this.figure.r = this.project.figureColor[0] * 255;
+        this.figure.g = this.project.figureColor[1] * 255;
+        this.figure.b = this.project.figureColor[2] * 255;
+        this.figure.a = this.project.figureColor[3] * 255;
       }, 500);
 
     },

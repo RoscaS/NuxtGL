@@ -44,7 +44,7 @@ export default class Project {
       z: 200,
     };
 
-    this.dt = () => this.store.state.player.elapsed;
+    this.dt = () => this.store.state.player.dt;
     this.playing = () => this.store.state.player.playing;
 
     this.drawScene();

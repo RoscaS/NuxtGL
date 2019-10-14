@@ -41,18 +41,27 @@ export default class Project {
   \*------------------------------------------------------------------*/
 
   initAttributes() {
+    // look up where the vertex data needs to go.
     this.positionLocation = this.gl.getAttribLocation(this.program, 'a_position');
     this.normalLocation = this.gl.getAttribLocation(this.program, 'a_normal');
 
+    // look up uniforms
     this.colorLocation = this.gl.getUniformLocation(this.program, 'u_color');
+    this.lightColorLocation = this.gl.getUniformLocation(this.program, 'u_lightColor');
+    this.specularColorLocation = this.gl.getUniformLocation(this.program, 'u_specularColor');
+    this.worldLocation = this.gl.getUniformLocation(this.program, "u_world");
+    this.shininessLocation = this.gl.getUniformLocation(this.program, 'u_shininess');
+    this.WVPLocation = this.gl.getUniformLocation( // World View Projection
+      this.program, "u_worldViewProjection"
+    );
     this.WITLocation = this.gl.getUniformLocation( // World Inverse Transpose
       this.program, 'u_worldInverseTranspose'
     );
-    this.WVPLocation = this.gl.getUniformLocation(
-      this.program, "u_worldViewProjection"
+    this.lightWorldPositionLocation = this.gl.getUniformLocation(
+      this.program, "u_lightWorldPosition"
     );
-    this.reverseLightDirectionLocation = this.gl.getUniformLocation(
-      this.program, "u_reverseLightDirection"
+    this.viewWorldPositionLocation = this.gl.getUniformLocation(
+      this.program, "u_viewWorldPosition"
     );
   }
 
@@ -131,9 +140,9 @@ export default class Project {
     );
     // Compute camera's matrix
     let cameraMatrix = m4.lookAt(this.camera, this.target, this.up);
-    // Vue matrix from camera's matrix
+    // View matrix from camera's matrix
     let viewMatrix = m4.inverse(cameraMatrix);
-    // Compute vue projection matrix
+    // Compute view projection matrix
     let viewProjectionMatrix = m4.multiply(projectionMatrix, viewMatrix);
     // Draw a figure at the origin
     let worldMatrix = m4.yRotation(degToRad(this.values.rotation));
@@ -147,11 +156,20 @@ export default class Project {
     let transpose = false;
     this.gl.uniformMatrix4fv(this.WVPLocation, transpose, worldViewProjectionMatrix);
     this.gl.uniformMatrix4fv(this.WITLocation, transpose, worldInverseTransposeMatrix);
+    this.gl.uniformMatrix4fv(this.worldLocation, transpose, worldMatrix);
     // Set the color to use
     this.gl.uniform4fv(this.colorLocation, this.figureColor);
     // Set light direction
-    let direction = m4.normalize(this.light);
-    this.gl.uniform3fv(this.reverseLightDirectionLocation, direction);
+    this.gl.uniform3fv(this.lightWorldPositionLocation, this.light);
+    // Set the camera/view position
+    this.gl.uniform3fv(this.viewWorldPositionLocation, this.camera);
+
+    // set the light color
+    this.gl.uniform3fv(this.lightColorLocation, m4.normalize(this.lightColor));  // red light
+    // set the specular color
+    this.gl.uniform3fv(this.specularColorLocation, m4.normalize(this.lightColor));  // red light
+    // Set the shininess
+    this.gl.uniform1f(this.shininessLocation, this.values.shine)
   }
 
   renderLoop = () => {
@@ -173,22 +191,24 @@ export default class Project {
       fov: 60,
       zNear: 1,
       zFar: 20000,
-      rotation: 0, //figureRotationRad
-      camX: 100,
-      camY: 150,
-      camZ: 200,
+      rotation: 41, //figureRotationRad
+      shine: 100,
+      camX: 147,
+      camY: 0,
+      camZ: 176,
 
       tarX: 0,
       tarY: 35,
       tarZ: 0,
 
-      ligX: 0.5,
-      ligY: 0.7,
-      ligZ: 1,
+      ligX: 23,
+      ligY: 46,
+      ligZ: 84,
     };
 
     this.up = [0, 1, 0];
     this.aspecRatio = this.gl.canvas.clientWidth / this.gl.canvas.clientHeight;
-    this.figureColor = [0.2, 1, 0.2, 1]; // green
+    this.figureColor = [0.2, 1, 0.2, 1];
+    this.lightColor = [1, 0, 0];
   }
 }
