@@ -43,6 +43,8 @@ export default class Project {
       y: 0,
       z: 200,
     };
+    this.fPosition = [this.values.z, 0, 0];
+    this.up = [0, 1, 0];
 
     this.dt = () => this.store.state.player.elapsed;
     this.playing = () => this.store.state.player.playing;
@@ -106,6 +108,16 @@ export default class Project {
     // Compute a matrix for the camera
     let cameraMatrix = m4.yRotation(degToRad(this.values.cameraAngle));
     cameraMatrix = m4.translate(cameraMatrix, this.values.x, this.values.y, this.values.z * 1.5);
+
+    // Get camera's position from computed matrix
+    let cameraPosition = [
+      cameraMatrix[12],
+      cameraMatrix[13],
+      cameraMatrix[14],
+    ];
+
+    // Compute the camera's matrix using look at
+    cameraMatrix = m4.lookAt(cameraPosition, this.fPosition, this.up);
 
     // Make a view matrix from the camera matrix
     let viewMatrix = m4.inverse(cameraMatrix);

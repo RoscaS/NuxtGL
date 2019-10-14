@@ -41,7 +41,7 @@
         spread: { model: 200, min: 1, max: 2000, step: 0.1, label: 'Spread', side: "R"},
         x: { model: 0, min: -2000, max: 2000, step: 0.1, label: 'x', side: "R"},
         y: { model: 0, min: -2000, max: 2000, step: 0.1, label: 'y', side: "R"},
-        z: { model: 300, min: 0, max: 2000, step: 0.1, label: 'z', side: "R"},
+        z: { model: 300, min: -2000, max: 2000, step: 0.1, label: 'z', side: "R"},
       },
     }),
     methods: {

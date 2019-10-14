@@ -34,6 +34,7 @@ export default {
    */
   plugins: [
     '~/plugins/paths.js',
+    { src: '~/plugins/vue-shortkey.js', mode: 'client' },
   ],
   /*
    ** Nuxt.js dev-modules
