@@ -67,10 +67,12 @@
     },
     mounted() {
       setTimeout(() => {
-        this.figure.r = this.project.figureColor[0] * 255;
-        this.figure.g = this.project.figureColor[1] * 255;
-        this.figure.b = this.project.figureColor[2] * 255;
-        this.figure.a = this.project.figureColor[3] * 255;
+        try {
+          this.figure.r = this.project.figureColor[0] * 255;
+          this.figure.g = this.project.figureColor[1] * 255;
+          this.figure.b = this.project.figureColor[2] * 255;
+          this.figure.a = this.project.figureColor[3] * 255;
+        } catch (e) {}
       }, 500);
 
     },
