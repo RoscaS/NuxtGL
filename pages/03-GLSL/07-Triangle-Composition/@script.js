@@ -1,0 +1,171 @@
+import { createShaderProgram, degToRad } from '../../../tools/helpers';
+import m4 from './@matrix';
+import fragment from './@shader-fragment';
+import vertex from './@shader-vertex';
+import { toRadian } from 'gl-matrix/cjs/common';
+
+export default class Project {
+
+  constructor(canvasId, store) {
+    let canvas = document.getElementById(canvasId);
+    // Autocompletion workaround
+    let gl = canvas.getContext('webgl');
+    this.gl = gl;
+
+    this.width = canvas.width;
+    this.height = canvas.height;
+    this.program = createShaderProgram(this.gl, vertex, fragment);
+    this.store = store;
+
+    this.initGeometry();
+    this.initAttributes();
+    this.initBuffers();
+    this.initValues();
+
+    this.drawScene();
+    this.renderLoop();
+  }
+
+  /*------------------------------------------------------------------*\
+   |*							              GET/SET
+   \*------------------------------------------------------------------*/
+
+  get dt() { return this.store.state.player.dt; }
+
+  get isPlaying() { return this.store.state.player.playing; }
+
+  updateDt(t) { this.store.commit('player/UPDATE_DT', t); }
+
+  /*------------------------------------------------------------------*\
+   |*							            INITIALIZATION
+   \*------------------------------------------------------------------*/
+
+  initGeometry() {
+    this.positions = [
+      100, 400, 0,
+      250, 100, 0,
+      400, 400, 0,
+    ];
+    this.colors = [
+      1.0, 0.0, 0.0, 1.0,
+      0.0, 1.0, 0.0, 1.0,
+      0.0, 0.0, 1.0, 1.0,
+    ]
+  }
+
+  initAttributes() {
+    this.matrixLocation = this.gl.getUniformLocation(this.program, 'u_matrix');
+    this.positionAttributeLocation = this.gl.getAttribLocation(this.program, 'a_position');
+    this.colorAttributeLocation = this.gl.getAttribLocation(this.program, 'a_color');
+  }
+
+  initBuffers() {
+    this.positionBuffer = this.gl.createBuffer();
+    this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.positionBuffer);
+    this.gl.bufferData(
+      this.gl.ARRAY_BUFFER,
+      new Float32Array(this.positions),
+      this.gl.STATIC_DRAW,
+    );
+
+    this.colorBuffer = this.gl.createBuffer();
+    this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.colorBuffer);
+    this.gl.bufferData(
+      this.gl.ARRAY_BUFFER,
+      new Float32Array(this.colors),
+      this.gl.STATIC_DRAW,
+    );
+  }
+
+  /*------------------------------------------------------------------*\
+   |*							               RENDERING
+   \*------------------------------------------------------------------*/
+
+  drawScene() {
+    this.setScene();
+    this.buffersBinding();
+    this.computeMatrices();
+
+    let primitiveType = this.gl.TRIANGLES;
+    let count = this.positions.length / 3;
+    let offset = 0;
+    this.gl.drawArrays(primitiveType, offset, count);
+  }
+
+  setScene() {
+    this.gl.viewport(0, 0, this.width, this.height);
+    this.gl.clear(this.gl.COLOR_BUFFER_BIT);
+    this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
+    this.gl.clearColor(0, 0, 0, 0);
+    this.gl.enable(this.gl.DEPTH_TEST);
+    this.gl.useProgram(this.program);
+  }
+
+  buffersBinding() {
+    this.gl.enableVertexAttribArray(this.positionAttributeLocation);
+    this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.positionBuffer);
+
+    let size = 3;
+    let type = this.gl.FLOAT;
+    let normalize = false;
+    let stride = 0;
+    let offset = 0;
+
+    this.gl.vertexAttribPointer(
+      this.positionAttributeLocation,
+      size, type, normalize, stride, offset,
+    );
+
+    this.gl.enableVertexAttribArray(this.colorAttributeLocation);
+    this.gl.bindBuffer(this.gl.ARRAY_BUFFER, this.colorBuffer);
+
+    size = 4;
+    type = this.gl.FLOAT;
+    normalize = false;
+    stride = 0;
+    offset = 0;
+
+    this.gl.vertexAttribPointer(
+      this.colorAttributeLocation,
+      size, type, normalize, stride, offset,
+    );
+  }
+
+  computeMatrices() {
+    let matrix = m4.projection(this.width, this.height, 400);
+    matrix = m4.translate(matrix, this.values.traX, this.values.traY, 0);
+    matrix = m4.xRotate(matrix, degToRad(0));
+    matrix = m4.yRotate(matrix, degToRad(0));
+    matrix = m4.zRotate(matrix, degToRad(this.values.rot));
+    matrix = m4.scale(matrix, this.values.scaX, this.values.scaY, 0);
+    this.gl.uniformMatrix4fv(this.matrixLocation, false, matrix);
+  }
+
+  renderLoop = () => {
+    if (this.isPlaying) {
+      this.updateDt(0.1);
+      this.values.rotation = this.dt;
+      this.drawScene();
+    }
+    window.requestAnimationFrame(this.renderLoop);
+  };
+
+  /*------------------------------------------------------------------*\
+   |*							                VALUES
+   \*------------------------------------------------------------------*/
+
+  initValues() {
+    this.values = {
+      fov: 60,
+      zNear: 1,
+      zFar: 20000,
+      traX: 0,
+      traY: 0,
+      scaX: 1,
+      scaY: 1,
+      rot: 0
+    };
+
+    this.aspecRatio = this.gl.canvas.clientWidth / this.gl.canvas.clientHeight;
+  }
+}
